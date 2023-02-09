@@ -1,4 +1,4 @@
-// Реализуйте структуру телефонной книги с помощью HashMap, учитывая, что 1 человек может иметь несколько телефонов.
+﻿// Реализуйте структуру телефонной книги с помощью HashMap, учитывая, что 1 человек может иметь несколько телефонов.
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,7 +15,7 @@ public class ex1dz{
     public static Map<String, List> phoonebook = new HashMap<>();
     public static void main(String[] args){
         
-        try(FileWriter fw = new FileWriter("phonebook.txt"))
+        try(FileWriter fw = new  FileWriter("phonebook.txt"))
         {
             Scanner iScanner = new Scanner(System.in);
             while(true){
@@ -49,20 +49,33 @@ public class ex1dz{
     }
     public static void View(){
 
-        try(FileReader tfr = new FileReader("phonebook.txt"))
-        {   
-            char[] buffer = new char[8096];     
+        // try(FileReader tfr = new FileReader("phonebook.txt"))
+        // {   
+        //     char[] buffer = new char[8096];     
      
-            int chars = tfr.read(buffer);
-            while (chars != -1) {
-                chars = tfr.read(buffer);
-                System.out.println(chars);
-            }
+        //     int chars = tfr.read(buffer);
+        //     while (chars != -1) {
+        //         chars = tfr.read(buffer);
+        //         System.out.println(chars);
+        //     }
+        // }
+        // catch(IOException ex){  
+             
+        //     System.out.println(ex.getMessage());
+        // }
+        try(FileReader reader = new FileReader("phonebook.txt"))
+        {
+           // читаем посимвольно
+            int c;
+            while((c=reader.read())!=-1){
+                 
+                System.out.print((char)c);
+            } 
         }
-        catch(IOException ex){  
+        catch(IOException ex){
              
             System.out.println(ex.getMessage());
-        }
+        }   
     }
     public static void WR(){
         
@@ -74,33 +87,34 @@ public class ex1dz{
             String secondname = iScanner.nextLine();
 
             System.out.println("Введите номер(пример -- 79876543221(7-999-999-99-99)):");
-            int kaif = iScanner.nextInt();
-            List<Integer> number = new ArrayList<>(kaif);
+            String kaif = iScanner.nextLine();
+            List<String> number = new ArrayList<>();
+            number.add(kaif);
 
-            System.out.println("У него будет один номер?(да/нет):");
+            System.out.println("У него будет один номер?(1 - да/ 2 - нет):");
             
-            String answer = iScanner.next();
+            Integer answer = iScanner.nextInt();
 
-                if (answer == "да"){
+                if (answer == 1){
                     phoonebook.put(secondname, number);
                     fw.write(secondname + number + "\n");
                     log("Пользователь решил вводить один номер");
                 }
-                else if (answer == "нет"){
-                    System.out.print("Сколько номеров мы будем записывать?");
+                else if (answer == 2){
+                    System.out.print("Сколько номеров мы будем записывать?\n:");
                     int callnumbers = iScanner.nextInt();
 
                     log("Пользователь решил вводить есколько номеров("+callnumbers+")");
-                    System.out.print("Вводите ");
+                    System.out.print("Вводите:\n ");
 
-                    List<Integer> list = new ArrayList<>();
                     for (int i = 0; i < callnumbers; i++) {
-                        list.add(iScanner.nextInt());
+                        number.add(iScanner.nextLine());
                     }
-                    phoonebook.put(secondname, list);
-                    fw.write(secondname + list + "\n");
+                    phoonebook.put(secondname, number);
+                    fw.write(secondname + number + "\n");
                 }
             iScanner.close();
+            fw.flush();
         }
         catch(IOException ex){  
              
